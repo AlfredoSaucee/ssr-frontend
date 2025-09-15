@@ -1,6 +1,6 @@
 
 import React from 'react'
-import Tiptap from '@/components/wysiwyg'
+import Tiptap from '@/components/menubar/wysiwyg'
 
 const page = () => {
   return <Tiptap />
