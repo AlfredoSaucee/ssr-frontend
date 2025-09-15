@@ -1,11 +1,9 @@
+
 import React from 'react'
 import Tiptap from '@/components/wysiwyg'
 
 const page = () => {
-  return (
-    <div><Tiptap /></div>
-    
-  )
+  return <Tiptap />
 }
 
 export default page

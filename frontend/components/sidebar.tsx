@@ -4,7 +4,7 @@ import SidebarItems from './sidebar-list'
 
 const navbar = () => {
   return (
-    <aside className='h-screen w-64 top-0 bg-blue-400 px-8'>
+    <aside className='h-screen w-64 top-0 border border-r-blue-600 px-8'>
       <SidebarItems />
     </aside>
   )
