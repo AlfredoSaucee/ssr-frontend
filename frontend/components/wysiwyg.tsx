@@ -2,6 +2,7 @@
 
 import { useEditor, EditorContent } from '@tiptap/react'
 import StarterKit from '@tiptap/starter-kit'
+import Bold from '@tiptap/extension-bold'
 
 const Tiptap = () => {
   const editor = useEditor({
@@ -11,7 +12,20 @@ const Tiptap = () => {
     immediatelyRender: false,
   })
 
-  return <EditorContent editor={editor} />
+  if (!editor) {
+    return null
+  }
+
+  return (
+    <>
+        <button
+            onClick={() => editor.chain().focus().toggleBold().run()}
+            className={editor.isActive('bold') ? 'is-active' : ''}
+        >
+            Toggle bold
+            </button>
+        <EditorContent editor={editor} />
+    </>)
 }
 
 export default Tiptap
