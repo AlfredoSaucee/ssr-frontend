@@ -1,5 +1,6 @@
 import React from 'react'
 import Tiptap from '@/components/menubar/wysiwyg';
+import DisplayDocument from '@/components/display-document';
 
 export default async function Dokument({ params }: { params: { id: string } }) {
   
@@ -9,7 +10,11 @@ export default async function Dokument({ params }: { params: { id: string } }) {
   
 
   return (
-    <Tiptap content={post.content} title={post.title} />
+    <DisplayDocument 
+      id={params.id} 
+      title={post.title} 
+      content={post.content} 
+    />
     
   )
 }
