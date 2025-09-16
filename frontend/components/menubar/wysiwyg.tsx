@@ -2,16 +2,17 @@
 
 import { useEditor, EditorContent } from '@tiptap/react'
 import StarterKit from '@tiptap/starter-kit'
-
-import { TextStyle } from '@tiptap/extension-text-style'
-import FontSize from '@tiptap/extension-font-size'
 import Menubar from './menubar'
-import { text } from 'stream/consumers'
 import TextAlign from '@tiptap/extension-text-align'
 import Highlight from '@tiptap/extension-highlight'
 import Code from '@tiptap/extension-code'
 
-const Tiptap = () => {
+
+interface TiptapProps {
+  post: string
+  // setPost: (content: string) => void
+}
+const Tiptap = ({ post }: TiptapProps) => {
 
   const editor = useEditor({
     extensions: [
@@ -25,22 +26,22 @@ const Tiptap = () => {
       TextAlign.configure({ types: ['heading', 'paragraph'] }),
       Highlight.configure({
         HTMLAttributes: {
-          class: 'my-custom-class',
+          class: 'bg-yellow-200 rounded px-1',
         },
 
       }),
       Code.configure({
         HTMLAttributes: {
-        class: 'my-custom-class',
+        class: 'bg-gray-100 rounded px-1 font-mono',
     },
   })
     ],
-    content: '',
+    content: post,
     editable: true,
     immediatelyRender: false,
     editorProps: {
       attributes: {
-        class: 'focus:outline-none min-h-screen bg-white p-4 border border-gray-300 rounded',
+        class: 'focus:outline-none min-h-screen bg-white p-4 border border-gray-300 rounded w-[60%] mx-auto',
       },
     },
   })
