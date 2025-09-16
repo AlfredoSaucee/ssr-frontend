@@ -9,10 +9,11 @@ import Code from '@tiptap/extension-code'
 
 
 interface TiptapProps {
-  post: string
+  content: string,
+  title?: string
   // setPost: (content: string) => void
 }
-const Tiptap = ({ post }: TiptapProps) => {
+const Tiptap = ({ content, title }: TiptapProps) => {
 
   const editor = useEditor({
     extensions: [
@@ -36,7 +37,8 @@ const Tiptap = ({ post }: TiptapProps) => {
     },
   })
     ],
-    content: post,
+    content: content,
+    
     editable: true,
     immediatelyRender: false,
     editorProps: {
@@ -55,7 +57,7 @@ const Tiptap = ({ post }: TiptapProps) => {
 
   return (
     <div className='flex flex-col '>
-      <Menubar editor={editor} />
+      <Menubar editor={editor} title={title} />
       <EditorContent editor={editor} />
     </div>
     )
