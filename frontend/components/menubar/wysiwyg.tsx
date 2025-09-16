@@ -6,15 +6,19 @@ import Menubar from './menubar'
 import TextAlign from '@tiptap/extension-text-align'
 import Highlight from '@tiptap/extension-highlight'
 import Code from '@tiptap/extension-code'
+import { useState } from 'react'
 
 
 interface TiptapProps {
   content: string,
-  title?: string
-  // setPost: (content: string) => void
+  title?: string,
+  setContent: (content: string) => void
 }
-const Tiptap = ({ content, title }: TiptapProps) => {
+const Tiptap = ({ content, title, setContent }: TiptapProps) => {
 
+  const [documentContent, setDocumentContent] = useState(content);
+  
+  console.log("Document content state:", documentContent);
   const editor = useEditor({
     extensions: [
       StarterKit.configure({
@@ -38,6 +42,9 @@ const Tiptap = ({ content, title }: TiptapProps) => {
   })
     ],
     content: content,
+    onUpdate: ({ editor }) => {
+      setContent(editor.getHTML());
+    },
     
     editable: true,
     immediatelyRender: false,
