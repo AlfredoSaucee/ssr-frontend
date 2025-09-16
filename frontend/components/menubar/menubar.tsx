@@ -3,14 +3,9 @@ import React from 'react'
 import { Toggle } from "@/components/ui/toggle"
 
 import { AlignCenter, AlignLeft, AlignRight, Bold, Code, Heading1, Heading2, Heading3, Highlighter, Italic, List, ListOrdered, Strikethrough } from 'lucide-react'
+import { Button } from '../tiptap-ui-primitive/button'
 
-interface MenubarProps {
-    editor: Editor | null,
-    title?: string
-}
-
-export default function Menubar({ editor, title }: MenubarProps) {
-
+export default function Menubar({ editor }: { editor: Editor | null }) {
     if (!editor) {
       return null
     }
@@ -93,7 +88,7 @@ export default function Menubar({ editor, title }: MenubarProps) {
             </Toggle>
             
         ))}
-        <p>{title}</p>
+        
     </div>
   )
 }
