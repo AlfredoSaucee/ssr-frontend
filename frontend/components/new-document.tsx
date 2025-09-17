@@ -33,8 +33,8 @@ export default function NewDocument() {
             onChange={(e) => setTitle(e.target.value)}
             className='border rounded-md p-1 mb-1 '
         />
-        <button onClick={handleSubmit} className="ml-2 py-1 px-2 bg-blue-600 rounded-md text-white hover:bg-blue-800 cursor-pointer">Save</button>
-        <TrashIcon className="h-8 w-8 p-1 ml-2 bg-red-600 rounded-md text-white hover:bg-red-800 cursor-pointer"></TrashIcon>
+        <button onClick={handleSubmit} className="ml-2 mb-1 py-1 px-2 bg-blue-600 rounded-md text-white hover:bg-blue-800 cursor-pointer">Save</button>
+        <TrashIcon className="h-8 w-8 p-1 ml-2 mb-1 bg-red-600 rounded-md text-white hover:bg-red-800 cursor-pointer"></TrashIcon>
       </div>
 
       <Tiptap content={content} setContent={setContent} />
