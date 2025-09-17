@@ -34,7 +34,7 @@ export default function DisplayDocument({
 
   return (
     <div>
-        <div className="w-[70%] mx-auto"><input
+        <div className="w-[70%] mx-auto flex items-center"><input
           type="text"
           placeholder="Title"
           value={title}
