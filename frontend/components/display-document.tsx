@@ -1,6 +1,7 @@
 'use client'
 import { useState } from 'react'
 import Tiptap from '@/components/menubar/wysiwyg'
+import { TrashIcon } from '@heroicons/react/24/outline'
 
 export default function DisplayDocument({
   id,
@@ -33,14 +34,15 @@ export default function DisplayDocument({
 
   return (
     <div>
-      <div className="w-[70%] mx-auto"><input
-        type="text"
-        placeholder="Title"
-        value={title}
-        onChange={(e) => setTitle(e.target.value)}
-        className='border rounded-md p-1 mb-1 '
-      />
-      <button onClick={handleSubmit} className="ml-2 py-1 px-2 bg-blue-600 rounded-md text-white hover:bg-blue-800 cursor-pointer">Save</button>
+        <div className="w-[70%] mx-auto"><input
+          type="text"
+          placeholder="Title"
+          value={title}
+          onChange={(e) => setTitle(e.target.value)}
+          className='border rounded-md p-1 mb-1 '
+        />
+        <button onClick={handleSubmit} className="ml-2 py-1 px-2 bg-blue-600 rounded-md text-white hover:bg-blue-800 cursor-pointer">Save</button>
+        <TrashIcon className="h-8 w-8 p-1 ml-2 bg-red-600 rounded-md text-white hover:bg-red-800 cursor-pointer"></TrashIcon>
       </div>
       
       <Tiptap content={content} setContent={setContent} />
