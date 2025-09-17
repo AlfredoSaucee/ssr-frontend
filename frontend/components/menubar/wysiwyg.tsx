@@ -18,7 +18,7 @@ const Tiptap = ({ content, title, setContent }: TiptapProps) => {
 
   const [documentContent, setDocumentContent] = useState(content);
   
-  console.log("Document content state:", documentContent);
+  // console.log("Document content state:", documentContent);
   const editor = useEditor({
     extensions: [
       StarterKit.configure({

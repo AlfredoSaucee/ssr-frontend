@@ -1,7 +1,12 @@
 import React from 'react'
 import SidebarItems from './sidebar-list'
 
-const data = await fetch("http://localhost:5025/documents")
+
+const data = await fetch("http://localhost:5025/documents",{
+  next: { revalidate: 10 }
+})
+
+
 const posts = await data.json()
 
 
@@ -13,4 +18,4 @@ const navbar = () => {
   )
 }
 
-export default navbar
+export default navbar 

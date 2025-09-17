@@ -5,7 +5,7 @@ import { Toggle } from "@/components/ui/toggle"
 import { AlignCenter, AlignLeft, AlignRight, Bold, Code, Heading1, Heading2, Heading3, Highlighter, Italic, List, ListOrdered, Strikethrough } from 'lucide-react'
 import { Button } from '../tiptap-ui-primitive/button'
 
-export default function Menubar({ editor }: { editor: Editor | null }) {
+export default function Menubar({ editor, title }: { editor: Editor | null, title?: string }) {
     if (!editor) {
       return null
     }
