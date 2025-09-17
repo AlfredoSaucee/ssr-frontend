@@ -50,7 +50,7 @@ const Tiptap = ({ content, title, setContent }: TiptapProps) => {
     immediatelyRender: false,
     editorProps: {
       attributes: {
-        class: 'focus:outline-none min-h-screen bg-white p-4 border border-gray-300 rounded w-[60%] mx-auto',
+        class: 'focus:outline-none min-h-screen bg-white p-4 border border-gray-300 rounded w-[70%] mx-auto',
       },
     },
   })

@@ -25,14 +25,18 @@ export default function NewDocument() {
 
   return (
     <div>
-      <input
+      <div className="w-[70%] mx-auto"><input
         type="text"
         placeholder="Title"
         value={title}
         onChange={(e) => setTitle(e.target.value)}
+        className='border rounded-md p-1 mb-1 '
       />
+      <button onClick={handleSubmit} className="ml-2 py-1 px-2 bg-blue-600 rounded-md text-white hover:bg-blue-800 cursor-pointer">Save</button>
+      </div>
+
       <Tiptap content={content} setContent={setContent} />
-      <button onClick={handleSubmit}>Save</button>
+      
     </div>
   )
 }
