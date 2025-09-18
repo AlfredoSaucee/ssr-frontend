@@ -1,6 +1,6 @@
 import React from 'react'
 import SidebarItems from './sidebar-list'
-
+import { ScrollArea } from "@/components/ui/scroll-area"
 
 const data = await fetch("http://localhost:5025/document/documents")
 
@@ -11,9 +11,9 @@ console.log(posts)
 
 const navbar = () => {
   return (
-    <aside className='h-screen w-64 top-0 border border-r-blue-600 px-8'>
+    <ScrollArea className="w-64 h-[calc(100vh-100px)] p-4">
       <SidebarItems posts={posts} />
-    </aside>
+    </ScrollArea>
   )
 }
 
