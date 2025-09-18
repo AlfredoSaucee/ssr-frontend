@@ -1,9 +1,8 @@
 import React from 'react'
+import NewDocument from '@/components/new-document'
 
-const page = () => {
+export default function page() {
   return (
-    <div>Dokument</div>
+    <div><NewDocument/></div>
   )
 }
-
-export default page
