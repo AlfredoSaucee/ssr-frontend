@@ -2,6 +2,7 @@
 import { useState } from 'react'
 import Tiptap from '@/components/menubar/wysiwyg'
 
+
 export default function DisplayDocument({
   id,
   title: initialTitle,
@@ -20,8 +21,7 @@ export default function DisplayDocument({
       headers: { 'Content-Type': 'application/json' },
       body: JSON.stringify({ title, content }),
     })
-    console.log("Document saved:", { title, content });
-    console.log("Response:", response);
+    
     if (response.ok) {
       const data = await response.json()
       console.log('Document created with ID:', data._id)
@@ -32,15 +32,16 @@ export default function DisplayDocument({
   }
 
   return (
-    <div>
-      <input
-        type="text"
-        placeholder="Title"
-        value={title}
-        onChange={(e) => setTitle(e.target.value)}
+    <div className='p-4 flex flex-col gap-4 '>
+      
+      
+      <Tiptap
+        content={content}
+        title={title}
+        setContent={setContent}
+        setTitle={setTitle}
+        onSave={handleSubmit}
       />
-      <Tiptap content={content} setContent={setContent} />
-      <button onClick={handleSubmit}>Save</button>
     </div>
   )
 }

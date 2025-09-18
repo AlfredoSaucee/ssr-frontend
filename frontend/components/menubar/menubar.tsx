@@ -27,7 +27,7 @@ export default function Menubar({ editor, title }: { editor: Editor | null, titl
             pressed: editor.isActive('heading', { level: 3 })
         },
         {
-            icon: <Bold className="size-4" />,
+            icon: <Bold className="size-4 " />,
             onClick: () => editor.chain().focus().toggleBold().run(),
             pressed: editor.isActive('bold')
         },
@@ -81,9 +81,9 @@ export default function Menubar({ editor, title }: { editor: Editor | null, titl
 
     ]
   return (
-    <div className='border rounded-md p-1 mb-1 flex justify-center align-middle'>
+    <div className='border rounded-md p-1 mb-1 flex justify-center align-start w-auto  mx-auto'>
         {Options.map((option, index) => (
-            <Toggle key={index} pressed={option.pressed} onPressedChange={option.onClick}>
+            <Toggle  key={index} pressed={option.pressed} onPressedChange={option.onClick}>
                 {option.icon}
             </Toggle>
             

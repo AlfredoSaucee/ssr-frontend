@@ -12,11 +12,12 @@ export default async function Dokument({ params }: { params: { id: string } }) {
   
 
   return (
+    <div className='bg-[#eeeeee] h-screen overflow-auto'>
     <DisplayDocument 
       id={id} 
       title={post.title} 
       content={post.content} 
     />
-    
+    </div>
   )
 }

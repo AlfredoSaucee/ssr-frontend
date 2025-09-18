@@ -1,22 +1,25 @@
 'use client'
 
-import { useEditor, EditorContent } from '@tiptap/react'
+import { useEditor, EditorContent, isActive } from '@tiptap/react'
 import StarterKit from '@tiptap/starter-kit'
 import Menubar from './menubar'
 import TextAlign from '@tiptap/extension-text-align'
 import Highlight from '@tiptap/extension-highlight'
 import Code from '@tiptap/extension-code'
 import { useState } from 'react'
+import { Button } from '../ui/button'
 
 
 interface TiptapProps {
   content: string,
   title?: string,
-  setContent: (content: string) => void
+  setContent: (content: string) => void,
+  setTitle?: (title: string) => void,
+  onSave?: () => void,
 }
-const Tiptap = ({ content, title, setContent }: TiptapProps) => {
+const Tiptap = ({ content, title, setContent, setTitle, onSave }: TiptapProps) => {
 
-  const [documentContent, setDocumentContent] = useState(content);
+  
   
   // console.log("Document content state:", documentContent);
   const editor = useEditor({
@@ -51,6 +54,7 @@ const Tiptap = ({ content, title, setContent }: TiptapProps) => {
     editorProps: {
       attributes: {
         class: 'focus:outline-none min-h-screen bg-white p-4 border border-gray-300 rounded w-[60%] mx-auto',
+        
       },
     },
   })
@@ -63,11 +67,34 @@ const Tiptap = ({ content, title, setContent }: TiptapProps) => {
 
 
   return (
-    <div className='flex flex-col '>
-      <Menubar editor={editor} title={title} />
+    <div className="flex flex-col gap-2 w-[80%] mx-auto">
+      {/* Top bar: menubar + title/knapp */}
+      <div className="flex flex-col sm:flex-row justify-evenly items-start sm:items-center w-full sm:w-[60%] mx-auto gap-2">
+        <Menubar editor={editor} />
+
+        {setTitle && onSave && (
+          <div className="flex flex-col sm:flex-row gap-2 w-full sm:w-auto">
+            <input
+              type="text"
+              placeholder="Titel..."
+              value={title}
+              onChange={(e) => setTitle(e.target.value)}
+              className="border p-2 rounded w-full sm:w-48"
+            />
+            <Button className="bg-blue-500 text-white px-4 py-2 rounded sm:w-auto" onClick={onSave}>
+              Spara
+            </Button>
+          </div>
+        )}
+      </div>
+
+
+      {/* EditorContent måste ligga **utanför** top-bar */}
       <EditorContent editor={editor} />
     </div>
-    )
+
+)
+
 }
 
 export default Tiptap

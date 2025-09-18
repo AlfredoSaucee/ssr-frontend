@@ -2,12 +2,11 @@ import React from 'react'
 import SidebarItems from './sidebar-list'
 
 
-const data = await fetch("http://localhost:5025/documents",{
-  next: { revalidate: 10 }
-})
+const data = await fetch("http://localhost:5025/document/documents")
 
 
 const posts = await data.json()
+console.log(posts)
 
 
 const navbar = () => {
