@@ -12,7 +12,7 @@ export default async function Dokument({ params }: { params: { id: string } }) {
   
 
   return (
-    <div className='bg-[#eeeeee] h-screen overflow-auto'>
+    <div className='bg-[#eeeeee] h-[calc(100vh-100px)] overflow-auto'>
     <DisplayDocument 
       id={id} 
       title={post.title} 
