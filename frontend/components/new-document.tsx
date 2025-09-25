@@ -7,7 +7,7 @@ export default function NewDocument() {
   const [content, setContent] = useState('')
 
   const handleSubmit = async () => {
-    const response = await fetch('https://ssr-frontend-ccewdebqh8htccf0.northeurope-01.azurewebsites.net/document/', {
+    const response = await fetch('https://bth-backendapi-ezdbd8cvbjfuapb3.northeurope-01.azurewebsites.net/document/', {
       method: 'POST',
       headers: { 'Content-Type': 'application/json' },
       body: JSON.stringify({ title, content }),

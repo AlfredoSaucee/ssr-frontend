@@ -16,7 +16,7 @@ export default function DisplayDocument({
   const [content, setContent] = useState(initialContent || '')
 
   const handleSubmit = async () => {
-    const response = await fetch(`http://localhost:5025/document/${id}`, {
+    const response = await fetch(`https://bth-backendapi-ezdbd8cvbjfuapb3.northeurope-01.azurewebsites.net/document/${id}`, {
       method: 'PUT',
       headers: { 'Content-Type': 'application/json' },
       body: JSON.stringify({ title, content }),
