@@ -26,30 +26,18 @@ export default function NewDocument({ onDocumentCreated }: { onDocumentCreated?:
 
 return (
   <div className="flex h-[calc(100vh-100px)]">
-   
-    <div className="w-64 border-r p-4">
-      <Sidebar />
-    </div>
-
-   
     <div className="flex-1 flex flex-col p-4">
-      <input
-        type="text"
-        placeholder="Title"
-        value={title}
-        onChange={(e) => setTitle(e.target.value)}
-        className="mb-4 p-2 border rounded"
-      />
+      
       <div className="flex-1 overflow-auto mb-4">
-        <Tiptap content={content} setContent={setContent} />
+        <Tiptap
+        content={content}
+        title={title}
+        setContent={setContent}
+        setTitle={setTitle}
+        onSave={handleSubmit}
+      />
       </div>
-      <button
-        onClick={handleSubmit}
-        className="px-4 py-2 bg-blue-500 text-white rounded w"
-      >
-        Spara dokument
-      </button>
+      
     </div>
   </div>
-)
-
+)}

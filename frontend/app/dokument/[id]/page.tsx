@@ -17,6 +17,7 @@ export default async function Dokument({ params }: { params: { id: string } }) {
       id={id} 
       title={post.title} 
       content={post.content} 
+      
     />
     </div>
   )
