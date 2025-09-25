@@ -1,8 +1,9 @@
 'use client'
 import { useState } from 'react'
 import Tiptap from '@/components/menubar/wysiwyg'
+import Sidebar from './sidebar'
 
-export default function NewDocument() {
+export default function NewDocument({ onDocumentCreated }: { onDocumentCreated?: () => void }) {
   const [title, setTitle] = useState('')
   const [content, setContent] = useState('')
 
@@ -12,27 +13,43 @@ export default function NewDocument() {
       headers: { 'Content-Type': 'application/json' },
       body: JSON.stringify({ title, content }),
     })
-    console.log("Document saved:", { title, content });
-    console.log("Response:", response);
+
     if (response.ok) {
       const data = await response.json()
-      console.log('Document created with ID:', data._id)
-      
+      setTitle('')
+      setContent('')
+      onDocumentCreated?.() 
     } else {
       console.error('Failed to save document')
     }
   }
 
-  return (
-    <div>
+return (
+  <div className="flex h-[calc(100vh-100px)]">
+   
+    <div className="w-64 border-r p-4">
+      <Sidebar />
+    </div>
+
+   
+    <div className="flex-1 flex flex-col p-4">
       <input
         type="text"
         placeholder="Title"
         value={title}
         onChange={(e) => setTitle(e.target.value)}
+        className="mb-4 p-2 border rounded"
       />
-      <Tiptap content={content} setContent={setContent} />
-      <button onClick={handleSubmit}>Save</button>
+      <div className="flex-1 overflow-auto mb-4">
+        <Tiptap content={content} setContent={setContent} />
+      </div>
+      <button
+        onClick={handleSubmit}
+        className="px-4 py-2 bg-blue-500 text-white rounded w"
+      >
+        Spara dokument
+      </button>
     </div>
-  )
-}
+  </div>
+)
+

@@ -1,5 +1,5 @@
 import React from 'react'
-import Tiptap from '@/components/menubar/wysiwyg';
+
 import DisplayDocument from '@/components/display-document';
 
 export default async function Dokument({ params }: { params: { id: string } }) {

@@ -1,20 +1,28 @@
-import React from 'react'
+'use client'
+import React, { useState, useEffect } from 'react'
 import SidebarItems from './sidebar-list'
 import { ScrollArea } from "@/components/ui/scroll-area"
 
-const data = await fetch("https://bth-backendapi-ezdbd8cvbjfuapb3.northeurope-01.azurewebsites.net/document/documents")
 
+export default function Layout() {
+  const [posts, setPosts] = useState([])
 
-const posts = await data.json()
-console.log(posts)
+  const fetchPosts = async () => {
+    const res = await fetch("https://bth-backendapi-ezdbd8cvbjfuapb3.northeurope-01.azurewebsites.net/document/documents", { cache: "no-store" })
+    const data = await res.json()
+    setPosts(data)
+  }
 
+  useEffect(() => {
+    fetchPosts()
+  }, [])
 
-const navbar = () => {
   return (
-    <ScrollArea className="w-64 h-[calc(100vh-100px)] p-4">
-      <SidebarItems posts={posts} />
-    </ScrollArea>
+    <div className="flex">
+      <ScrollArea className="w-64 h-[calc(100vh-100px)] p-4">
+        <SidebarItems posts={posts} />
+      </ScrollArea>
+      
+    </div>
   )
 }
-
-export default navbar 

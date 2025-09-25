@@ -33,7 +33,7 @@ export default function RootLayout({
 
     {/* Content area */}
     <div className="flex flex-1">
-      <Sidebar  />
+      
       <main className="flex-1 p-4 bg-gray-50 overflow-auto">
         {children}
       </main>
