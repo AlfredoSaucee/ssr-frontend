@@ -32,16 +32,20 @@ export default function DisplayDocument({
   }
 
   return (
-    <div className='p-4 flex flex-col gap-4 '>
+    <div className="flex h-[calc(100vh-100px)]">
+    <div className="flex-1  flex-col p-4">
       
-      
-      <Tiptap
+      <div className="flex-1 overflow-hidden mb-4">
+        <Tiptap
         content={content}
         title={title}
         setContent={setContent}
         setTitle={setTitle}
         onSave={handleSubmit}
       />
+      </div>
+      
     </div>
+  </div>
   )
 }
