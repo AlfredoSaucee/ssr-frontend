@@ -8,7 +8,7 @@ export default function Layout() {
   const [posts, setPosts] = useState([])
 
   const fetchPosts = async () => {
-    const res = await fetch("https://bth-backendapi-ezdbd8cvbjfuapb3.northeurope-01.azurewebsites.net/document/documents", { cache: "no-store" })
+    const res = await fetch(`${process.env.MONGO_DB_URI}/document/documents`, { next: { revalidate: 5 } })
     const data = await res.json()
     setPosts(data)
   }
