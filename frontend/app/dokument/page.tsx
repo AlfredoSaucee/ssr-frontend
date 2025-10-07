@@ -1,33 +1,46 @@
-'use client'
-import { useState, useEffect } from 'react'
-import SidebarItems from '@/components/sidebar-list'
-import { ScrollArea } from '@/components/ui/scroll-area'
-import NewDocument from '@/components/new-document'
+import SidebarItems from "@/components/sidebar-list";
+import { ScrollArea } from "@/components/ui/scroll-area";
+import NewDocument from "@/components/new-document";
+import { cookies } from "next/headers";
 
-export default function NewPage() {
-  const [posts, setPosts] = useState([])
+export default async function DokumentPage() {
+  const cookieHeader = cookies().toString();
 
-  const fetchPosts = async () => {
-    const res = await fetch(
-      "https://bth-backendapi-ezdbd8cvbjfuapb3.northeurope-01.azurewebsites.net/document/documents",
-      { cache: "no-store" }
-    )
-    const data = await res.json()
-    setPosts(data)
-  }
+  const query = `
+    query {
+      documents {
+        id
+        title
+        content
+      }
+    }
+  `;
 
-  useEffect(() => { fetchPosts() }, [])
+  const res = await fetch("http://localhost:5025/graphql", {
+    method: "POST",
+    headers: {
+      "Content-Type": "application/json",
+      Cookie: cookieHeader,
+    },
+    body: JSON.stringify({ query }),
+    cache: "no-store",
+  });
+
+  const json = await res.json();
+
+  const posts = json.data?.documents || [];
 
   return (
-    <div className="flex h-[calc(100vh-100px)]">
+    <div className="flex flex-1 min-h-0 bg-red-50 ">
       {/* Sidebar */}
       <ScrollArea className="w-64 p-4 border-r">
         <SidebarItems posts={posts} />
       </ScrollArea>
 
-      {/* Main content med editorn */}
-      <div className="flex-1 p-4">
-        <NewDocument onDocumentCreated={fetchPosts} />
+      {/* Main content */}
+      <div className="flex-1 ">
+        <NewDocument />
       </div>
     </div>
-  )}
+  );
+}
