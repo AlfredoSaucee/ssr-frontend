@@ -1,69 +1,47 @@
-import Link from "next/link";
+import { Button } from "@/components/ui/button";
 import { cookies } from "next/headers";
-
-interface Document {
-  id: string;
-  title: string;
-  content: string;
-}
+import Link from "next/link";
 
 export default async function Home() {
-  const cookieHeader = cookies().toString();
+  const cookieStore = cookies(); 
+  const token = (await cookieStore).get("authjs.session-token")?.value;
 
-  const query = `
-    query {
-      documents {
-        id
-        title
-        content
-      }
-    }
-  `;
-
-  const res = await fetch("http://localhost:5025/graphql", {
-    method: "POST",
+  const res = await fetch(`http://localhost:5025/auth/session`, {
     headers: {
-      "Content-Type": "application/json",
-      Cookie: cookieHeader,
+      Cookie: `authjs.session-token=${token}`,
     },
-    body: JSON.stringify({ query }),
     cache: "no-store",
   });
 
-  const json = await res.json();
-  const documents: Document[] = json.data?.documents || [];
+  const session = await res.json();
 
+  // if (!session?.user) {
+  //   // inte inloggad
+  //   redirect("/signin");
+  // }
+
+  // här kan du använda session.user
   return (
-    <div className="h-[calc(100vh-100px)] w-full flex justify-center items-center p-4">
-      <div className="grid grid-cols-2 lg:grid-cols-3 gap-4 w-full max-w-6xl h-full">
+    <div className="flex w-full h-[calc(100vh-90px)] items-center justify-center bg-linear-to-b from-slate-900 to-slate-950">
+      {session ? (
+        <div className="flex flex-col justify-center items-center text-[#E4960E]">
+          <Link href="/dokument-list">
+            <Button className="hover:cursor-pointer">Kom igång</Button>
+          </Link>
+        </div>
         
-        <Link
-          href="/dokument"
-          className="bg-linear-to-b from-slate-700 to-slate-950 shadow-md flex justify-center items-center rounded-4xl hover:bg-blue-400 transition p-4 text-center text-white hover:scale-103"
-        >
-          <div>
-            <h3 className="font-bold text-lg ">+ Skapa nytt dokument</h3>
-          </div>
-        </Link>
-
-      
-        {documents.length > 0 ? (
-          documents.map((doc, index) => (
-            <Link
-              key={doc.id}
-              href={`/dokument/${doc.id}`}
-              className="bg-gray-200 flex justify-center items-center rounded-4xl hover:bg-gray-300 transition p-4 text-center shadow-xl hover:scale-103"
-            >
-              <div>
-                <h3 className="font-bold text-lg">{doc.title}</h3>
-                <p className="text-sm text-gray-600 line-clamp-3">{doc.content}</p>
-              </div>
+      ): (
+        <div className="flex flex-col justify-center items-center text-[#E4960E] gap-4 font-orbitron">
+          <h1 className="font-bold text-5xl">SSR-EDITOR</h1>
+          <p>Klicka på länken nedan för att logga in med Github</p>
+          <div className="flex flex-row gap-6 w-full justify-evenly">
+            
+            <Link href="http://localhost:5025/auth/signin">
+              <Button className="hover:cursor-pointer hover:bg-[#e1a742c5] hover:scale-105 hover:rotate-2 bg-[#e39309c5] shadow-2xl shadow-[#97b6ff] text-black border border-black ">Logga in</Button>
             </Link>
-          ))
-        ) : (
-          <p className="col-span-full text-center text-gray-500">Inga dokument ännu</p>
-        )}
-      </div>
+          </div>
+        </div>
+    )}
     </div>
   );
 }

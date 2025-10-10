@@ -5,10 +5,8 @@ import { ScrollArea } from "@/components/ui/scroll-area";
 import SidebarItems from "@/components/sidebar-list";
 
 export default async function Dokument({ params }: { params: { id: string } }) {
-  const { id } = params;
-
-  const cookieStore = cookies();
-  const cookieHeader = cookieStore.toString();
+  const { id } = await params;
+  const cookieHeader = cookies().toString();
 
   const query = `
     query GetDocumentsAndOne($id: ID!) {

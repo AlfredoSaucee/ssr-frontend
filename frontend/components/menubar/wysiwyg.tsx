@@ -1,27 +1,23 @@
 'use client'
 
-import { useEditor, EditorContent, isActive } from '@tiptap/react'
+import { useEditor, EditorContent } from '@tiptap/react'
 import StarterKit from '@tiptap/starter-kit'
 import Menubar from './menubar'
 import TextAlign from '@tiptap/extension-text-align'
 import Highlight from '@tiptap/extension-highlight'
 import Code from '@tiptap/extension-code'
-import { useState } from 'react'
+import { useEffect } from 'react'
 import { Button } from '../ui/button'
 
-
 interface TiptapProps {
-  content: string,
-  title?: string,
-  setContent: (content: string) => void,
-  setTitle?: (title: string) => void,
-  onSave?: () => void,
+  content: string
+  title?: string
+  setContent: (content: string) => void
+  setTitle?: (title: string) => void
+  onSave?: () => void
 }
-const Tiptap = ({ content, title, setContent, setTitle, onSave }: TiptapProps) => {
 
-  
-  
-  // console.log("Document content state:", documentContent);
+const Tiptap = ({ content, title, setContent, setTitle, onSave }: TiptapProps) => {
   const editor = useEditor({
     extensions: [
       StarterKit.configure({
@@ -36,39 +32,39 @@ const Tiptap = ({ content, title, setContent, setTitle, onSave }: TiptapProps) =
         HTMLAttributes: {
           class: 'bg-yellow-200 rounded px-1',
         },
-
       }),
       Code.configure({
         HTMLAttributes: {
-        class: 'bg-gray-100 rounded px-1 font-mono',
-    },
-  })
+          class: 'bg-gray-100 rounded px-1 font-mono',
+        },
+      }),
     ],
-    content: content,
+    content,
     onUpdate: ({ editor }) => {
-      setContent(editor.getHTML());
+      // När användaren skriver så uppdatera React state
+      setContent(editor.getHTML())
     },
-    
     editable: true,
     immediatelyRender: false,
     editorProps: {
       attributes: {
         class: 'focus:outline-none min-h-screen bg-white p-4 border border-gray-300 rounded w-[60%] mx-auto',
-        
       },
     },
   })
 
-  if (!editor) {
-    return null
-  }
+  
+  useEffect(() => {
+    if (editor && content !== editor.getHTML()) {
+      editor.commands.setContent(content)
+    }
+  }, [content, editor])
 
-
-
+  if (!editor) return null
 
   return (
     <div className="flex flex-col gap-2 w-[80%] mx-auto">
-      {/* Top bar: menubar + title/knapp */}
+      {/* Top bar: menubar + titel/knapp */}
       <div className="flex flex-col sm:flex-row justify-evenly items-start sm:items-center w-full sm:w-[60%] mx-auto gap-2">
         <Menubar editor={editor} />
 
@@ -81,20 +77,20 @@ const Tiptap = ({ content, title, setContent, setTitle, onSave }: TiptapProps) =
               onChange={(e) => setTitle(e.target.value)}
               className="border p-2 rounded w-full sm:w-48"
             />
-            <Button className="bg-blue-500 text-white px-4 py-2 rounded sm:w-auto" onClick={onSave}>
+            <Button
+              className="bg-blue-500 text-white px-4 py-2 rounded sm:w-auto"
+              onClick={onSave}
+            >
               Spara
             </Button>
           </div>
         )}
       </div>
 
-
-      {/* EditorContent måste ligga **utanför** top-bar */}
+      {/* EditorContent */}
       <EditorContent editor={editor} />
     </div>
-
-)
-
+  )
 }
 
 export default Tiptap

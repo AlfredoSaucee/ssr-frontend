@@ -7,6 +7,7 @@ export async function middleware(req: NextRequest) {
   // Skydda alla /dokument-sidor
   if (pathname.startsWith("/dokument")) {
     // Kolla om auth.js-session-token finns
+    //Finns den är vi inloggade
     const sessionCookie = req.cookies.get("authjs.session-token")?.value;
 
     if (!sessionCookie) {
