@@ -10,7 +10,6 @@ interface Document {
 export default async function Home() {
   const cookieHeader = cookies().toString();
 
-  // Bryt ut denna och lägg den i en querys mapp.
   const query = `
     query {
       documents {
@@ -35,34 +34,51 @@ export default async function Home() {
   const documents: Document[] = json.data?.documents || [];
 
   return (
-    <div className="h-[calc(100vh-90px)] w-full flex justify-center items-center p-4 bg-linear-to-b from-slate-900 to-slate-950">
-      <div className="grid grid-cols-2 lg:grid-cols-3 gap-4 w-full max-w-4xl h-full">
-        
+    <div className="min-h-[calc(100vh-90px)] w-full flex flex-col items-center justify-center bg-gradient-to-b from-slate-50 to-slate-100 text-slate-800">
+      <h1 className="text-3xl font-semibold mb-8 text-slate-900 tracking-tight">
+        Dina dokument
+      </h1>
+
+      <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6 w-[90%] md:w-[80%] p-8 bg-white rounded-3xl shadow-md border border-slate-200">
+       
         <Link
           href="/dokument"
-          className="bg-linear-to-b from-slate-700 to-slate-950 w-[200px] h-[200px] shadow-md flex justify-center items-center rounded-4xl hover:bg-blue-400 transition p-4 text-center text-white hover:scale-103"
+          className="group flex flex-col justify-center items-center  h-[200px] w-full rounded-2xl border-2 border-dashed border-slate-300 hover:border-blue-400 hover:bg-blue-50 transition-all duration-300 shadow-sm hover:shadow-md"
         >
-          <div>
-            <h3 className="font-bold text-lg ">Nytt Dokument</h3>
+          <div className="text-center">
+            <h3 className="font-semibold text-lg text-slate-600 group-hover:text-blue-600 transition">
+              + Nytt Dokument
+            </h3>
+            <p className="text-sm text-slate-400 mt-1">
+              Skapa ett nytt dokument
+            </p>
           </div>
         </Link>
 
-      
+     
         {documents.length > 0 ? (
-          documents.map((doc, index) => (
+          documents.map((doc) => (
             <Link
               key={doc.id}
               href={`/dokument/${doc.id}`}
-              className="bg-linear-to-b text-white w-[200px] h-[200px] from-slate-600  border-slate-500 to-slate-950 flex justify-center items-center rounded-4xl hover:bg-gray-300 transition p-4 text-center shadow-xl hover:scale-103"
+              className="group flex flex-col justify-center items-center h-[200px] w-full rounded-2xl bg-gradient-to-br from-slate-800 via-slate-900 to-slate-950 text-white p-4 text-center shadow-lg hover:shadow-xl transition-transform duration-300 hover:scale-[1.03]"
             >
               <div>
-                <h3 className="font-bold text-lg">{doc.title}</h3>
-                <p className="text-sm text-gray-600 line-clamp-3">{doc.content}</p>
+                <h3 className="font-semibold text-lg mb-1 group-hover:text-blue-300 transition-colors">
+                  {doc.title}
+                </h3>
+                {/* Border*/}
+                <div className="border-t border-slate-600 mt-2 pt-2">
+                  
+                </div>
+
               </div>
             </Link>
           ))
         ) : (
-          <p className="col-span-full text-center text-gray-500">Inga dokument ännu</p>
+          <p className="col-span-full text-center text-slate-400 py-12 italic">
+            Inga dokument ännu
+          </p>
         )}
       </div>
     </div>

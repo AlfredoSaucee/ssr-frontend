@@ -12,6 +12,12 @@ export default async function DokumentPage() {
         id
         title
         content
+        comments{
+          id
+          text
+          from
+          to
+        }
       }
     }
   `;
@@ -27,11 +33,10 @@ export default async function DokumentPage() {
   });
 
   const json = await res.json();
-
   const posts = json.data?.documents || [];
 
   return (
-    <div className="flex flex-1 min-h-0 bg-red-50 ">
+    <div className="flex flex-1 min-h-0  ">
       {/* Sidebar */}
       <ScrollArea className="w-64 p-4 border-r">
         <SidebarItems posts={posts} />

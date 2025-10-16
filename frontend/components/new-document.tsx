@@ -1,91 +1,87 @@
 'use client'
 
-import { useState } from 'react'
+import Editor from '@monaco-editor/react'
 import Tiptap from '@/components/menubar/wysiwyg'
+import { useNewDocument } from '@/hooks/useNewDocument'
 
 
 export default function NewDocument({ onDocumentCreated }: { onDocumentCreated?: () => void }) {
-  const [title, setTitle] = useState('')
-  const [content, setContent] = useState('')
-  const [loading, setLoading] = useState(false)
-  const [error, setError] = useState<string | null>(null)
+  const {
+    title, setTitle,
+    content, setContent,
+    comments, handleAddComment,
+    loading, error,
+    isCodeMode, toggleMode,
+    handleSubmit,
+    shareDocumentHandler,
+    running, runOutput, runCode
+  } = useNewDocument(onDocumentCreated);
 
-  const handleSubmit = async () => {
-    setLoading(true)
-    setError(null)
-    
-    
+  
 
-    try {
-      if(!title.trim() || !content.trim()){
-        setError("Title & content cannot be empty")
-        setLoading(false)
-        return;
-      }
-
-      console.log("Submitting", {title, content})
-      const response = await fetch('http://localhost:5025/graphql', {
-        method: 'POST',
-        headers: { 'Content-Type': 'application/json' },
-        credentials: 'include', // om du använder sessions/cookies
-        body: JSON.stringify({
-          query: `
-            mutation CreateDocument($title: String!, $content: String!) {
-              createDocument(title: $title, content: $content) {
-                id
-                title
-                content
-              }
-            }
-          `,
-          variables: { title, content },
-        }),
-      })
-
-      const data = await response.json()
-
-      if (!response.ok) {
-        throw new Error(`Network error: ${response.status}`)
-      }
-
-      // Säker hantering av errors från GraphQL
-      if (data.errors && Array.isArray(data.errors)) {
-        throw new Error(data.errors.map((e: any) => e.message).join(', '))
-      } else if (data.errors) {
-        throw new Error(data.errors.message || 'Unknown error from server')
-      }
-
-      console.log('Created document:', data.data.createDocument)
-
-      // Reset fälten
-      setTitle('')
-      setContent('')
-      onDocumentCreated?.()
-    } catch (err: any) {
-      console.error('Failed to save document', err)
-      setError(err.message)
-    } finally {
-      setLoading(false)
-    }
-  }
 
   return (
-    <div className="flex flex-1 flex-col">
-      {/* <Sidebar /> */}
-      <div className="flex-1 flex flex-col p-4">
-        <div className="flex-1 overflow-auto mb-4">
+    <div className="flex flex-1 flex-col h-[calc(100vh-100px)] p-4">
+      <div className="mb-2 flex gap-2">
+        <button
+          className="px-3 py-1 border rounded bg-gray-200 hover:bg-gray-300"
+          onClick={() => {
+          console.log("CLICK from button");
+          toggleMode();
+        }}
+        >
+          {isCodeMode ? 'Byt Till Text Mode' : 'Byt Till Code Mode'}
+        </button >
+        {/* Köra kod knapp- visas bara inuti code-mode */}
+        {isCodeMode && (<>
+          <button className="px-3 py-1 border rounded bg-gray-200 hover:bg-gray-300" onClick={runCode} disabled={running}>Kör Kod</button>
+          <button className="px-3 py-1 border rounded bg-gray-200 hover:bg-gray-300" onClick={handleSubmit} disabled={running}>Spara</button>
+        </>)}
+      </div>
+
+      <div className="flex-1 overflow-auto border rounded">
+        {isCodeMode ? (
+          <div className="flex flex-row h-full p-8">
+            {/* KOD-EDITOR */}
+            <div className="w-1/2 border-r border-gray-300 ">
+                <Editor
+                  height="100%"
+                  width="80%"
+                  defaultLanguage="javascript"
+                  value={content}
+                  onChange={(value) => setContent(value || '')}
+                  options={{
+                    minimap: { enabled: false },
+                    fontSize: 14,
+                    automaticLayout: true,
+                    
+                  }}
+                  theme="vs-dark"
+                />
+            </div>
+
+            
+            <div className="w-1/2 bg-gray-900 text-white p-4 overflow-auto font-mono">
+              {runOutput || "Kör din kod för att se output..."}
+            </div>
+          </div>
+        ) : (
           <Tiptap
+            
             content={content}
             title={title}
             setContent={setContent}
             setTitle={setTitle}
             onSave={handleSubmit}
+            onAddComment={handleAddComment}
+            comments={comments}
+            shareDocument={(email) => shareDocumentHandler(email)}
           />
-        </div>
-
-        {error && <p className="text-red-500">{error}</p>}
-        {loading && <p>Laddar...</p>}
+        )}
       </div>
+
+      {error && <p className="text-red-500 mt-2">{error}</p>}
+      {loading && <p className="mt-2">Laddar...</p>}
     </div>
   )
 }

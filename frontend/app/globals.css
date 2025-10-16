@@ -140,3 +140,41 @@
     font-size: 1.1rem;
   }
 }
+
+.tiptap-document {
+  background: #f3f3f3;
+  min-height: 100vh;
+  display: flex;
+  justify-content: center;
+  padding: 2rem 0;
+}
+
+.tiptap-document .ProseMirror {
+  background: white;
+  width: 210mm;
+  min-height: 297mm;
+  padding: 25mm 20mm;
+  box-shadow: 0 0 8px rgba(0, 0, 0, 0.15);
+  border-radius: 6px;
+  font-family: "Georgia", serif;
+  line-height: 1.6;
+}
+
+.tiptap-document .ProseMirror p {
+  margin: 0 0 1em;
+  line-height: 0.75;
+}
+
+@media print {
+  .tiptap-document {
+    background: white;
+    padding: 0;
+  }
+
+  .tiptap-document .ProseMirror {
+    box-shadow: none;
+    width: auto;
+    min-height: auto;
+    padding: 0;
+  }
+}

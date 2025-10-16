@@ -3,25 +3,14 @@ import DisplayDocument from "@/components/display-document";
 import { cookies } from "next/headers";
 import { ScrollArea } from "@/components/ui/scroll-area";
 import SidebarItems from "@/components/sidebar-list";
+import { GET_ALL_DOCUMENTS } from "@/Graphql/queries";
+import { graphqlRequest } from "@/Graphql/helpers";
 
 export default async function Dokument({ params }: { params: { id: string } }) {
   const { id } = await params;
   const cookieHeader = cookies().toString();
 
-  const query = `
-    query GetDocumentsAndOne($id: ID!) {
-      documents {
-        id
-        title
-        content
-      }
-      document(id: $id) {
-        id
-        title
-        content
-      }
-    }
-  `;
+  const query = GET_ALL_DOCUMENTS
 
   try {
     const res = await fetch("http://localhost:5025/graphql", {
@@ -30,48 +19,67 @@ export default async function Dokument({ params }: { params: { id: string } }) {
         "Content-Type": "application/json",
         Cookie: cookieHeader,
       },
-      body: JSON.stringify({ query, variables: { id } }),
+      body: JSON.stringify({ query: GET_ALL_DOCUMENTS, variables: { id } }),
       cache: "no-store",
     });
 
     const json = await res.json();
 
     if (!res.ok) {
-      console.error("GraphQL Network Error:", res.statusText);
       return <div>Fel vid hämtning av dokument ({res.status})</div>;
     }
 
     if (json.errors) {
-      console.error("GraphQL errors:", json.errors);
-      return <div className="w-full h-screen flex justify-center items-center font-bold">Serverfel: {json.errors[0]?.message || "Okänt fel"}</div>;
+      return (
+        <div className="w-full h-screen flex justify-center items-center font-bold">
+          Serverfel: {json.errors[0]?.message || "Okänt fel"}
+        </div>
+      );
     }
 
     const posts = json.data?.documents || [];
     const post = json.data?.document;
+    const users = json.data?.users;
 
     if (!post) {
-      return <div>Dokumentet hittades inte eller du saknar behörighet.</div>;
+      return (
+        <div className="w-full h-screen flex justify-center items-center text-slate-600">
+          Dokumentet hittades inte eller du saknar behörighet.
+        </div>
+      );
     }
 
     return (
-      <div className="flex h-full overflow-hidden">
-        {/* Sidebar med alla dokument */}
-        <ScrollArea className="w-64 p-4 border-r">
-          <SidebarItems posts={posts} />
-        </ScrollArea>
+      <div className="flex min-h-[calc(100vh-90px)] bg-gradient-to-br from-slate-50 to-slate-100">
+        {/* Sidebar */}
+        <aside className="w-72 bg-white border-r border-slate-200 shadow-md flex flex-col">
+          <div className="px-6 py-4 border-b border-slate-200">
+            <h2 className="font-semibold text-slate-800 text-lg">Dina dokument</h2>
+          </div>
+          <ScrollArea className="flex-1 p-4">
+            <SidebarItems posts={posts} />
+          </ScrollArea>
+        </aside>
 
-        {/* Dokument-visning */}
-        <div className="flex-1 p-4 overflow-auto">
-          <DisplayDocument
-            id={post.id}
-            title={post.title}
-            content={post.content}
-          />
-        </div>
+        {/* Dokumentvisning */}
+        <main className="flex-1 overflow-hidden p-8">
+          <div className="bg-white rounded-3xl shadow-lg border border-slate-200 h-full overflow-hidden">
+            <DisplayDocument
+              id={post.id}
+              title={post.title}
+              content={post.content}
+              comments={post.comments}
+              users={users}
+            />
+          </div>
+        </main>
       </div>
     );
   } catch (err: any) {
-    console.error("Fetch error:", err);
-    return <div>Ett oväntat fel inträffade: {err.message}</div>;
+    return (
+      <div className="w-full h-screen flex justify-center items-center text-slate-600">
+        Ett oväntat fel inträffade: {err.message}
+      </div>
+    );
   }
 }

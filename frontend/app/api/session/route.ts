@@ -14,3 +14,8 @@ export async function GET(req: NextRequest) {
   const data = await resp.json();
   return NextResponse.json(data, { status: resp.status });
 }
+
+
+
+
+// 1. jag försöker 

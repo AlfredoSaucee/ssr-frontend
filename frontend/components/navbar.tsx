@@ -31,16 +31,16 @@ export default function Navbar() {
 
 
 
-  console.log("user:",user)
+  
 
   if (loading) return (
-    <div className="bg-slate-900 w-full h-[90px] flex items-center px-8">
+    <div className="bg-blue-600 w-full h-[90px] flex items-center px-8">
       <span className="text-white font-bold">Laddar...</span>
     </div>
   )
 
   return (
-    <div className="bg-slate-900 w-full h-[90px] flex justify-between items-center px-8">
+    <div className="bg-blue-600 w-full h-[90px] flex justify-between items-center px-8">
 
       
       <Link className="flex flex-row items-center justify-center" href="/">

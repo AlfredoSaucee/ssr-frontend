@@ -3,6 +3,7 @@ import type { Metadata } from "next";
 import { Geist, Geist_Mono } from "next/font/google";
 import "./globals.css";
 import Navbar from "@/components/navbar";
+import { Toaster } from "react-hot-toast";
 
 
 const geistSans = Geist({
@@ -32,9 +33,10 @@ export default async function RootLayout({
       <body className={`${geistSans.variable} ${geistMono.variable} antialiased`}>
         <div className="flex flex-col">
           <Navbar /> 
-          <div className="flex flex-1">
-            <main className="flex-1 bg-gray-50 overflow-auto">
+          <div className="flex flex-1 ">
+            <main className="flex-1 overflow-auto ">
               {children}
+              <Toaster position="bottom-right" reverseOrder={false} />
             </main>
           </div>
         </div>

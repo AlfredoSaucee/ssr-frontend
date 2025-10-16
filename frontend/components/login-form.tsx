@@ -1,3 +1,4 @@
+"use client"
 import { cn } from "@/lib/utils"
 import { Button } from "@/components/ui/button"
 import {
@@ -15,12 +16,17 @@ import {
 } from "@/components/ui/field"
 import { Input } from "@/components/ui/input"
 import Link from "next/link"
+import { useSearchParams } from "next/navigation";
 
 export function LoginForm({
   className,
   ...props
 }: React.ComponentProps<"div">) {
+   const searchParams = useSearchParams();
+   const callbackUrl = searchParams.get("callbackUrl") || "/";
+   console.log("params",callbackUrl)
   return (
+    
     <div className={cn("flex flex-col gap-6", className)} {...props}>
       <Card>
         <CardHeader>
@@ -55,11 +61,8 @@ export function LoginForm({
               </Field>
               <Field>
                 <Button type="submit">Login</Button>
-                <Link 
-                href="http://localhost:5025/auth/signin">
-                  <Button
-                  
-                  variant="outline" type="button">
+                <Link href={`http://localhost:5025/auth/signin?callbackUrl=${encodeURIComponent(callbackUrl)}`}>
+                  <Button variant="outline" type="button">
                     Login with Github
                   </Button>
                 </Link>

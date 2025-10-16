@@ -3,7 +3,7 @@ import { cookies } from "next/headers";
 import Link from "next/link";
 
 export default async function Home() {
-  const cookieStore = cookies(); 
+  const cookieStore = cookies();
   const token = (await cookieStore).get("authjs.session-token")?.value;
 
   const res = await fetch(`http://localhost:5025/auth/session`, {
@@ -15,33 +15,110 @@ export default async function Home() {
 
   const session = await res.json();
 
-  // if (!session?.user) {
-  //   // inte inloggad
-  //   redirect("/signin");
-  // }
-
-  // här kan du använda session.user
   return (
-    <div className="flex w-full h-[calc(100vh-90px)] items-center justify-center bg-linear-to-b from-slate-900 to-slate-950">
-      {session ? (
-        <div className="flex flex-col justify-center items-center text-[#E4960E]">
-          <Link href="/dokument-list">
-            <Button className="hover:cursor-pointer">Kom igång</Button>
-          </Link>
-        </div>
+    <main className="flex flex-col items-center justify-center min-h-[calc(100vh-90px)] bg-gradient-to-b from-slate-50 to-slate-100 text-slate-800 p-8">
+      {session?.user ? (
         
-      ): (
-        <div className="flex flex-col justify-center items-center text-[#E4960E] gap-4 font-orbitron">
-          <h1 className="font-bold text-5xl">SSR-EDITOR</h1>
-          <p>Klicka på länken nedan för att logga in med Github</p>
-          <div className="flex flex-row gap-6 w-full justify-evenly">
-            
-            <Link href="http://localhost:5025/auth/signin">
-              <Button className="hover:cursor-pointer hover:bg-[#e1a742c5] hover:scale-105 hover:rotate-2 bg-[#e39309c5] shadow-2xl shadow-[#97b6ff] text-black border border-black ">Logga in</Button>
+        <section
+          id="dashboard"
+          className="w-full max-w-5xl bg-white rounded-3xl shadow-lg border border-slate-200 p-10 text-center"
+        >
+          <h1 className="text-3xl font-semibold mb-4">
+            Välkommen tillbaka, {session.user.name || "Användare"} 
+          </h1>
+          <p className="text-slate-500 mb-10">
+            Härifrån kan du snabbt komma åt dina dokument eller skapa nya.
+          </p>
+
+          <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6">
+            <Link
+              href="/dokument-list"
+              className="group flex flex-col justify-center items-center h-40 rounded-2xl bg-gradient-to-br from-slate-800 to-slate-950 text-white hover:scale-105 hover:shadow-lg transition-all"
+            >
+              <h3 className="font-semibold text-lg group-hover:text-blue-300">
+                Mina dokument
+              </h3>
+              <p className="text-sm text-slate-400 mt-1">Se alla filer</p>
+            </Link>
+
+            <Link
+              href="/dokument"
+              className="group flex flex-col justify-center items-center border-2 border-dashed border-slate-300 hover:border-blue-400 h-40 rounded-2xl text-blue-700  hover:scale-105 hover:shadow-lg transition-all"
+            >
+              <h3 className="font-semibold text-lg text-blue-700" >
+                Skapa nytt
+              </h3>
+              <p className="text-sm text-blue-700 mt-1">Starta ett nytt dokument</p>
+            </Link>
+
+            <Link
+              href="/profil"
+              className="group flex flex-col justify-center items-center h-40 rounded-2xl bg-gradient-to-br from-emerald-600 to-emerald-800 text-white hover:scale-105 hover:shadow-lg transition-all"
+            >
+              <h3 className="font-semibold text-lg group-hover:text-emerald-200">
+                Profil
+              </h3>
+              <p className="text-sm text-emerald-100 mt-1">Hantera konto (Ej tillgängligt)</p>
             </Link>
           </div>
-        </div>
-    )}
+        </section>
+      ) : (
+     
+        <section
+          id="hero"
+          className="flex flex-col items-center text-center max-w-3xl"
+        >
+          <h1 className="text-5xl font-bold mb-6 bg-gradient-to-r from-blue-600 to-indigo-700 bg-clip-text text-transparent">
+            SSR-EDITOR
+          </h1>
+          <p className="text-lg text-slate-600 mb-8 leading-relaxed">
+            Skapa, redigera och hantera dina dokument direkt i webbläsaren.  
+            Snabbt, säkert och utan onödigt krångel.
+          </p>
+
+          <div className="flex gap-4">
+            <Link href="http://localhost:5025/auth/signin">
+              <Button className="bg-blue-600 hover:bg-blue-700 text-white px-6 py-3 rounded-xl shadow-md hover:scale-105 transition hover:cursor-pointer">
+                Logga in här
+              </Button>
+            </Link>
+            <Link href="/signup">
+              <Button className="bg-slate-200 hover:bg-slate-300 text-slate-800 px-6 py-3 rounded-xl shadow-md hover:scale-105 transition hover:cursor-pointer">
+                Skapa konto
+              </Button>
+            </Link>
+          </div>
+
+          <div className="mt-16 grid grid-cols-1 sm:grid-cols-3 gap-6 text-slate-600">
+            <Feature
+              icon="📝"
+              title="Redigera i realtid"
+              desc="Skriv och formatera text med vår kraftfulla editor."
+            />
+            <Feature
+              icon="☁️"
+              title="Säker lagring"
+              desc="Allt sparas tryggt i molnet, alltid tillgängligt."
+            />
+            <Feature
+              icon="🚀"
+              title="Snabbt & enkelt"
+              desc="Inget krångel, bara fokusera på ditt innehåll."
+            />
+          </div>
+        </section>
+      )}
+    </main>
+  );
+}
+
+
+function Feature({ icon, title, desc }: { icon: string; title: string; desc: string }) {
+  return (
+    <div className="flex flex-col items-center bg-white p-6 rounded-2xl shadow-sm hover:shadow-md transition">
+      <span className="text-3xl mb-2">{icon}</span>
+      <h3 className="font-semibold text-slate-800 mb-1">{title}</h3>
+      <p className="text-sm text-slate-500 text-center">{desc}</p>
     </div>
   );
 }

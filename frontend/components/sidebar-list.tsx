@@ -13,7 +13,7 @@ const SidebarItems = ({ posts }: Props) => {
   
   return (
     <div className='rounded'>
-        <h2 className=" text-black text-xl font-bold antialiased">Dina dokument</h2>
+        
         <ul>
           {posts.map((post) => (
             <li key={post.id}>
