@@ -1,0 +1,85 @@
+import React from "react";
+import DisplayDocument from "@/components/display-document";
+import { cookies } from "next/headers";
+import { ScrollArea } from "@/components/ui/scroll-area";
+import SidebarItems from "@/components/sidebar-list";
+import { GET_ALL_DOCUMENTS } from "@/Graphql/queries";
+import { graphqlRequest } from "@/Graphql/helpers";
+
+export default async function Dokument({ params }: { params: { id: string } }) {
+  const { id } = await params;
+  const cookieHeader = cookies().toString();
+
+  const query = GET_ALL_DOCUMENTS
+
+  try {
+    const res = await fetch("http://localhost:5025/graphql", {
+      method: "POST",
+      headers: {
+        "Content-Type": "application/json",
+        Cookie: cookieHeader,
+      },
+      body: JSON.stringify({ query: GET_ALL_DOCUMENTS, variables: { id } }),
+      cache: "no-store",
+    });
+
+    const json = await res.json();
+
+    if (!res.ok) {
+      return <div>Fel vid hämtning av dokument ({res.status})</div>;
+    }
+
+    if (json.errors) {
+      return (
+        <div className="w-full h-screen flex justify-center items-center font-bold">
+          Serverfel: {json.errors[0]?.message || "Okänt fel"}
+        </div>
+      );
+    }
+
+    const posts = json.data?.documents || [];
+    const post = json.data?.document;
+    const users = json.data?.users;
+
+    if (!post) {
+      return (
+        <div className="w-full h-screen flex justify-center items-center text-slate-600">
+          Dokumentet hittades inte eller du saknar behörighet.
+        </div>
+      );
+    }
+
+    return (
+      <div className="flex min-h-[calc(100vh-90px)] bg-gradient-to-br from-slate-50 to-slate-100">
+        {/* Sidebar */}
+        <aside className="w-72 bg-white border-r border-slate-200 shadow-md flex flex-col">
+          <div className="px-6 py-4 border-b border-slate-200">
+            <h2 className="font-semibold text-slate-800 text-lg">Dina dokument</h2>
+          </div>
+          <ScrollArea className="flex-1 p-4">
+            <SidebarItems posts={posts} />
+          </ScrollArea>
+        </aside>
+
+        {/* Dokumentvisning */}
+        <main className="flex-1 overflow-hidden p-8">
+          <div className="bg-white rounded-3xl shadow-lg border border-slate-200 h-full overflow-hidden">
+            <DisplayDocument
+              id={post.id}
+              title={post.title}
+              content={post.content}
+              comments={post.comments}
+              users={users}
+            />
+          </div>
+        </main>
+      </div>
+    );
+  } catch (err: any) {
+    return (
+      <div className="w-full h-screen flex justify-center items-center text-slate-600">
+        Ett oväntat fel inträffade: {err.message}
+      </div>
+    );
+  }
+}

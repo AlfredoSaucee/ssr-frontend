@@ -5,7 +5,7 @@ interface Props {
   posts: {
     content: string;
     title: string;
-    _id?: string;
+    id: string;
   }[];
 }
 
@@ -13,13 +13,13 @@ const SidebarItems = ({ posts }: Props) => {
   
   return (
     <div className='rounded'>
-        <h2 className=" text-black text-xl font-bold antialiased">Sparade dokument</h2>
+        
         <ul>
           {posts.map((post) => (
-            <li key={post._id}>
+            <li key={post.id}>
               <Link
-              className='hover:underline border-b border-gray-300 py-1 block' 
-              href={"/dokument/" + post._id}>{post.title}</Link>
+              className='border-b border-gray-300 py-1 block hover:bg-slate-400/10 px-0.5' 
+              href={"/dokument/" + post.id}>{post.title}</Link>
             </li>
           ))}
         </ul>

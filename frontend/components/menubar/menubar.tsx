@@ -81,7 +81,7 @@ export default function Menubar({ editor, title }: { editor: Editor | null, titl
 
     ]
   return (
-    <div className='border rounded-md p-1 mb-1 flex justify-center align-start w-auto  mx-auto'>
+    <div className='border-b-2 border-slate-300 '>
         {Options.map((option, index) => (
             <Toggle  key={index} pressed={option.pressed} onPressedChange={option.onClick}>
                 {option.icon}
