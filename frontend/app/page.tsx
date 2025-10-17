@@ -3,17 +3,31 @@ import { cookies } from "next/headers";
 import Link from "next/link";
 
 export default async function Home() {
-  const cookieStore = cookies();
-  const token = (await cookieStore).get("authjs.session-token")?.value;
+  const cookieStore = await cookies();
+  const token = await cookieStore.get("authjs.session-token")?.value;
+  console.log("fckn token: ", token)
+  
+  const envMode = process.env.ENV_MODE;
+  console.log("envMODE",envMode)
+  const isProd = envMode === "prod";
 
-  const res = await fetch(`https://bth-backend-awgwf4b9dneyhnfe.northeurope-01.azurewebsites.net/auth/session`, {
+  const graphqlUrl = isProd
+    ? `${process.env.BACKEND_URL_LIVE}`
+    : "http://localhost:5025";
+
+
+  const res = await fetch(`${graphqlUrl}/auth/session`, {
     headers: {
       Cookie: `authjs.session-token=${token}`,
     },
     cache: "no-store",
+    credentials: "include"
   });
 
+  console.log("res", res)
+
   const session = await res.json();
+  console.log("Session: ", session)
 
   return (
     <main className="flex flex-col items-center justify-center min-h-[calc(100vh-90px)] bg-gradient-to-b from-slate-50 to-slate-100 text-slate-800 p-8">

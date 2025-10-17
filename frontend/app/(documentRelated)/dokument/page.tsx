@@ -22,7 +22,14 @@ export default async function DokumentPage() {
     }
   `;
 
-  const res = await fetch("https://bth-backend-awgwf4b9dneyhnfe.northeurope-01.azurewebsites.net/graphql", {
+  const envMode = process.env.ENV_MODE;
+  const isProd = envMode === "prod";
+
+  const graphqlUrl = isProd
+    ? `${process.env.BACKEND_URL_LIVE}/graphql`
+    : "http://localhost:5025/graphql";
+
+  const res = await fetch(graphqlUrl, {
     method: "POST",
     headers: {
       "Content-Type": "application/json",

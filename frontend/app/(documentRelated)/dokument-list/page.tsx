@@ -9,6 +9,15 @@ interface Document {
 
 export default async function Home() {
   const cookieHeader = cookies().toString();
+  const envMode = process.env.ENV_MODE;
+  console.log("envMODE",envMode)
+  const isProd = envMode === "prod";
+
+  const graphqlUrl = isProd
+    ? `${process.env.BACKEND_URL_LIVE}/graphql`
+    : "http://localhost:5025/graphql";
+
+  console.log(graphqlUrl)
 
   const query = `
     query {
@@ -20,7 +29,7 @@ export default async function Home() {
     }
   `;
 
-  const res = await fetch("http://localhost:5025/graphql", {
+  const res = await fetch(graphqlUrl, {
     method: "POST",
     headers: {
       "Content-Type": "application/json",
