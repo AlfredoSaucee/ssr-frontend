@@ -6,7 +6,7 @@ export default async function Home() {
   const cookieStore = cookies();
   const token = (await cookieStore).get("authjs.session-token")?.value;
 
-  const res = await fetch(`http://localhost:5025/auth/session`, {
+  const res = await fetch(`https://bth-backend-awgwf4b9dneyhnfe.northeurope-01.azurewebsites.net/auth/session`, {
     headers: {
       Cookie: `authjs.session-token=${token}`,
     },
