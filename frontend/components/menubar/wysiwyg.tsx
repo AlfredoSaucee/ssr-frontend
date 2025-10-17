@@ -160,7 +160,7 @@ const Tiptap = ({
 
       isRemoteRef.current = true;
       
-      editor.commands.setContent(incoming, false);
+      editor.commands.setContent(incoming);
       try {
         editor.commands.setTextSelection({ from, to });
       } catch {
