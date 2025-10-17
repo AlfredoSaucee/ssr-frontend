@@ -67,7 +67,7 @@ export default function NewDocument({ onDocumentCreated }: { onDocumentCreated?:
           </div>
         ) : (
           <Tiptap
-            
+            id=''
             content={content}
             title={title}
             setContent={setContent}
