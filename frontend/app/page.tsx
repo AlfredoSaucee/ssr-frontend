@@ -77,7 +77,7 @@ export default async function Home() {
           </p>
 
           <div className="flex gap-4">
-            <Link href="http://localhost:5025/auth/signin">
+            <Link href="https://bth-backend-awgwf4b9dneyhnfe.northeurope-01.azurewebsites.net/auth/signin">
               <Button className="bg-blue-600 hover:bg-blue-700 text-white px-6 py-3 rounded-xl shadow-md hover:scale-105 transition hover:cursor-pointer">
                 Logga in här
               </Button>
