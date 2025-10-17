@@ -61,7 +61,7 @@ export function LoginForm({
               </Field>
               <Field>
                 <Button type="submit">Login</Button>
-                <Link href={`http://localhost:5025/auth/signin?callbackUrl=${encodeURIComponent(callbackUrl)}`}>
+                <Link href={`https://bth-backend-awgwf4b9dneyhnfe.northeurope-01.azurewebsites.net/auth/signin?callbackUrl=${encodeURIComponent(callbackUrl)}`}>
                   <Button variant="outline" type="button">
                     Login with Github
                   </Button>

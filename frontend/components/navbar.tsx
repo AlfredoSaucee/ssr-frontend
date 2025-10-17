@@ -57,7 +57,7 @@ export default function Navbar() {
 
             <span className="text-[#E4960E]"> {user.name}</span>
             <a
-              href="http://localhost:5025/auth/signout" 
+              href="https://bth-backend-awgwf4b9dneyhnfe.northeurope-01.azurewebsites.net/auth/signout" 
               className="bg-slate-950 text-white px-4 py-1 rounded-full flex flex-row justify-center items-center hover:bg-slate-800 transition font-bold  inset-ring-1"
             >
               Logga ut
