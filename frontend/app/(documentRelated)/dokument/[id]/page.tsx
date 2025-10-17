@@ -9,11 +9,17 @@ import { graphqlRequest } from "@/Graphql/helpers";
 export default async function Dokument({ params }: { params: { id: string } }) {
   const { id } = await params;
   const cookieHeader = cookies().toString();
+  const envMode = process.env.ENV_MODE;
+  const isProd = envMode === "prod";
 
-  const query = GET_ALL_DOCUMENTS
+  const graphqlUrl = isProd
+    ? `${process.env.BACKEND_URL_LIVE}/graphql`
+    : "http://localhost:5025/graphql";
+
+  
 
   try {
-    const res = await fetch("https://bth-backend-awgwf4b9dneyhnfe.northeurope-01.azurewebsites.net/graphql", {
+    const res = await fetch(graphqlUrl, {
       method: "POST",
       headers: {
         "Content-Type": "application/json",
@@ -24,6 +30,7 @@ export default async function Dokument({ params }: { params: { id: string } }) {
     });
 
     const json = await res.json();
+    console.log("WTF:", json)
 
     if (!res.ok) {
       return <div>Fel vid hämtning av dokument ({res.status})</div>;
